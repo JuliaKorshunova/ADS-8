@@ -8,10 +8,10 @@ void Train::addCage(bool light) {
   if (first == nullptr) {
     first = cageWagon;
   } else if (first->next == nullptr) {
-      cageWagon->next = first;
-      first->next = cageWagon;
-      cageWagon->prev = first;
-      first->prev = cageWagon;
+    cageWagon->next = first;
+    first->next = cageWagon;
+    cageWagon->prev = first;
+    first->prev = cageWagon;
   } else {
     Cage* cg = first;
     while (cg->next != first) {
@@ -25,32 +25,37 @@ void Train::addCage(bool light) {
   }
   countOp = 0;
 }
-Train::Train() {
+Train::Train(): {
   first = nullptr;
   countOp = 0;
 }
-int Train :: getLength() {
-  Cage* items;
-  int CageWa;
-  countOp = 0;
-  first->light = true;
-  while (first->light == true) {
-    items = first->next;
-    while (items->light == false) {
-      items = items->next;
-      countOp++;
+int Train::getLength() {
+    Cage* CageWa = first;
+    if (CageWa->light == false) {
+        CageWa->light = true;
     }
-    countOp++;
-    items->light = false;
-    CageWa = 1;
-    while (items->prev != first) {
-      items = items->prev;
-      countOp++;
-      CageWa++;
+    int countCageWa = 0;
+    int rezult = 0;
+    while (true) {
+        CageWa = CageWa->next;
+        countOp += 1;
+        countCageWa += 1;
+        while (CageWa->light == false) {
+            CageWa = CageWa->next;
+            countCageWa += 1;
+            countOp += 1;
+        }
+        CageWa->light = false;
+        rezult = countCageWa;
+        while (countCageWa != 0) {
+            countOp += 1;
+            countCageWa -= 1;
+            CageWa = CageWa->prev;
+        }
+        if (CageWa->light == false) {
+            return rezult;
+        }
     }
-    countOp++;
-  }
-  return CageWa;
 }
 int Train :: getOpCount() {
   if (countOp == 0)
